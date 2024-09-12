@@ -29,7 +29,7 @@
 
     <div class="result-container">
         <h2>Form Submission Result</h2>
-        <img src="${pageContext.request.contextPath}/uploads/${imageName}" alt="Uploaded Image" style="width: 200px; height: 200px;">
+        <img src="/uploads/${imageName}" alt="Uploaded Image" style="width: 200px; height: 200px;">
         <p><strong>Username:</strong> <span>${username}</span></p>
         <p><strong>Password:</strong> <span>${password}</span></p>
         

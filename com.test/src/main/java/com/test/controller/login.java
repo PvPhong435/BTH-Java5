@@ -23,7 +23,11 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 public class login {
 
-	private static String UPLOAD_DIR = System.getProperty("user.dir") + "/uploads/";
+	@Autowired
+    private ServletContext servletContext;
+	
+	//private static String UPLOAD_DIR = System.getProperty("user.dir") + "/uploads/";
+//	private static String UPLOAD_DIR = servletContext.getRealPath("/uploads/")+ "/uploads/";
 
 	@Autowired
 	HttpServletRequest request;
@@ -47,19 +51,21 @@ public class login {
 
 		Users user = new Users(username,password,image.toString());
 
-		File uploadDir = new File(UPLOAD_DIR);
-		if (!uploadDir.exists()) {
-			uploadDir.mkdir(); // Tạo thư mục nếu chưa tồn tại
-		}
+		 String uploadDir = servletContext.getRealPath("/uploads/");
+	        File uploadDirectory = new File(uploadDir);
+	        
+	        // Kiểm tra nếu thư mục không tồn tại thì tạo mới
+	        if (!uploadDirectory.exists()) {
+	            uploadDirectory.mkdirs();
+	        }
 		// Xử lý file ảnh
 		if (!image.isEmpty()) {
 			try {
-				// Lấy tên file gốc
 				String fileName = image.getOriginalFilename();
-				// Đường dẫn nơi lưu trữ ảnh
-				Path path = Paths.get(UPLOAD_DIR + fileName);
-				// Lưu file ảnh
-				image.transferTo(new File(path.toString()));
+                String filePath = uploadDir + File.separator + fileName;
+                
+                // Lưu file vào thư mục uploads
+                image.transferTo(new File(filePath));
 				// Truyền tên file ảnh vào model để hiển thị trong view
 				model.addAttribute("imageName", fileName);
 
