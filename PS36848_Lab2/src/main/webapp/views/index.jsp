@@ -42,6 +42,11 @@
             <a href="/c" class="btn btn-primary">c</a>
             <a href="/d" class="btn btn-primary">d</a>
         </div>
+         <!-- Bài tập Thêm -->
+        <div class="list-group-item d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Bài tập Thêm</h5>
+            <a href="/SmartPhone" class="btn btn-primary">Đi đến Bài tập Thêm</a>
+        </div>
     </div>
 </div>
 
