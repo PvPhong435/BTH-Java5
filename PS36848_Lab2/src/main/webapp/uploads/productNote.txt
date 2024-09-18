@@ -58,42 +58,6 @@ Apple
 USA
 12promax.png
 
-iphone 12 pro
-120000.0
-Apple
-USA
-12promax.png
-
-iphone 12 pro
-120000.0
-Apple
-USA
-12promax.png
-
-iphone 12 pro
-120000.0
-Apple
-USA
-12promax.png
-
-iphone 12 pro
-120000.0
-Apple
-USA
-12promax.png
-
-iphone 12 pro
-120000.0
-Apple
-USA
-12promax.png
-
-iphone 12 pro
-120000.0
-Apple
-USA
-12promax.png
-
 iphone 11 pro
 200000.0
 Apple
@@ -117,4 +81,28 @@ iphone 11 pro
 Apple
 Japan
 iphone11pro.jfif
+
+iphone 12 pro
+200000.0
+Apple
+Chinese
+IPhone12pro.png
+
+iphone 12 pro
+200000.0
+Apple
+Chinese
+IPhone12pro.png
+
+iphone 12 pro
+200000.0
+Apple
+Chinese
+IPhone12pro.png
+
+iphone 11 pro
+200000.0
+Apple
+Chinese
+IPhone12pro.png
 
