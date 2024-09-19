@@ -22,7 +22,6 @@
 </style>
 </head>
 <body>
-
 	<div class="header-dark">
 		<%--Header --%>
 		<jsp:include page="/views/header.jsp"></jsp:include>
