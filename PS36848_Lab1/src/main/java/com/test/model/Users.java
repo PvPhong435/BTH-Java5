@@ -4,8 +4,7 @@ import lombok.*;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
+
 
 public class Users {
 	private String username;

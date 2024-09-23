@@ -5,8 +5,7 @@ import lombok.*;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
+
 public class Product {
 	private String name;
 	private Double price;
