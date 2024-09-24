@@ -50,13 +50,12 @@ CREATE TABLE DatSanCau (
     NgayDat DATE,
     GioBatDau TIME,
     GioKetThuc TIME,
-	TongThoiGianChoi INT DEFAULT 0, -- Tính tổng thời gian chơi, đơn vị là phút
-    TongTien DECIMAL(10, 2), -- Tổng tiền cho lượt đặt sân
     TrangThaiDat VARCHAR(50), -- Trạng thái đặt: 'Đang xử lý', 'Đã thanh toán', 'Đã hủy'
 	PRIMARY KEY(MaDatSan),
     FOREIGN KEY (MaKhachHang) REFERENCES KhachHang(MaKhachHang),
     FOREIGN KEY (MaSan) REFERENCES SanCau(MaSan)
 );
+
 
 GO
 
