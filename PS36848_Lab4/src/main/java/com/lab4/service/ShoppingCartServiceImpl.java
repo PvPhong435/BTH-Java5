@@ -38,7 +38,9 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 		}
 		else
 		{
-			SP.item.remove(item);
+//			SP.item.remove(item);
+			this.remove(id);
+			map.remove(id);
 			return "Xóa item thành công";
 			
 		}

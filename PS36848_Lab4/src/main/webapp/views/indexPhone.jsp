@@ -2,6 +2,8 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -56,29 +58,58 @@
     <h1 class="text-center text-success mb-4">${message}</h1>
 
     <div class="row">
-        <c:forEach var="item" items="${items}">
-            <div class="col-md-3">
-                <div class="card p-3 product-card">
-                    <div class="text-center">
-                        <img src="/image/${item.image}" class="img-fluid rounded" alt="${item.name}">
+    <c:forEach var="item" items="${phones}">
+        <div class="col-md-3">
+            <div class="card p-3 product-card">
+                <div id="carousel${item.id}" class="carousel slide" data-ride="carousel">
+                    <!-- Indicators -->
+                    <ul class="carousel-indicators">
+                        <c:forEach var="i" begin="0" end="${fn:length(item.image) - 1}">
+                            <li data-target="#carousel${item.id}" data-slide-to="${i}" class="${i == 0 ? 'active' : ''}"></li>
+                        </c:forEach>
+                    </ul>
+
+                    <!-- Carousel items -->
+                    <div class="carousel-inner">
+                        <c:forEach var="img" items="${item.image}" varStatus="status">
+                            <div class="carousel-item ${status.first ? 'active' : ''}">
+                                <img src="/image/${img}" class="d-block w-100 img-fluid rounded" alt="${item.name}">
+                            </div>
+                        </c:forEach>
                     </div>
-                    <div class="product-details mt-3 text-center">
-                        <span class="price text-danger">Price: $ ${item.price}</span>
-                        <p class="mt-2"> Name: ${item.name}</p>
-                        <form:form method="POST" action="/add/${item.id}" enctype="multipart/form-data" >
-                            
-                            <button type="submit" class="btn btn-success btn-cart btn-block">
-                                <i class="fa fa-cart-plus"></i> Add to cart
-                            </button>
-                        </form:form>
-                        <div class="weight mt-2">
-                            <small>1 piece, 2.5kg</small>
-                        </div>
+
+                    <!-- Controls -->
+                    <a class="carousel-control-prev" href="#carousel${item.id}" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carousel${item.id}" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+
+                <div class="product-details mt-3 text-center">
+                    <span class="price text-danger">Price: $ ${item.price}</span>
+                    <p class="mt-2"> Name: ${item.name}</p>
+                    <p class="mt-2"> Ram: ${item.ram}</p>
+                    <p class="mt-2"> Rom: ${item.rom}</p>
+                    <p class="mt-2"> Operating System: ${item.operatingSystem}</p>
+                    <p class="mt-2"> Descripe: ${item.descripe}</p>
+                    <form:form method="POST" action="/add/${item.id}" enctype="multipart/form-data">
+                        <button type="submit" class="btn btn-success btn-cart btn-block">
+                            <i class="fa fa-cart-plus"></i> Add to cart
+                        </button>
+                    </form:form>
+                    <div class="weight mt-2">
+                        <small>1 piece, 2.5kg</small>
                     </div>
                 </div>
             </div>
-        </c:forEach>
-    </div>
+        </div>
+    </c:forEach>
+</div>
+
 
     <div class="text-center my-4">
         <a href="/view" class="text-decoration-none">

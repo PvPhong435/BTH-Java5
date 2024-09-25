@@ -42,6 +42,14 @@ CREATE TABLE SanCau (
 
 GO
 
+CREATE TABLE AnhSan(
+	MaSan INT,
+	LinkAnh VARCHAR(50),
+	PRIMARY KEY(MaSan),
+	FOREIGN KEY(MaSan) REFERENCES SanCau(MaSan)
+);
+
+GO
 
 CREATE TABLE DatSanCau (
     MaDatSan INT NOT NULL IDENTITY(1,1),
@@ -169,7 +177,7 @@ CREATE TABLE HoaDonSanPham(
 	MaKhachHang INT,
 	NhanVienLap VARCHAR(50),
 	PRIMARY KEY(SoHoaDon),
-	FOREIGN KEY(MaKhachHang) REFERENCES KhacHHang(MaKhachHang),
+	FOREIGN KEY(MaKhachHang) REFERENCES KhachHang(MaKhachHang),
 	FOREIGN KEY(NhanVienLap) REFERENCES NhanVien(MaNhanVien)
 );
 
@@ -227,15 +235,15 @@ VALUES
 
 GO
 
-INSERT INTO DatSanCau (MaKhachHang, MaSan, NgayDat, GioBatDau, GioKetThuc, TongThoiGianChoi, TongTien, TrangThaiDat)
+INSERT INTO DatSanCau (MaKhachHang, MaSan, NgayDat, GioBatDau, GioKetThuc,  TrangThaiDat)
 VALUES 
-(1, 1, '2024-09-10', '08:00', '10:00', 120, 500000, 'Đã thanh toán'),
-(2, 2, '2024-09-12', '14:00', '16:00', 120, 400000, 'Đang xử lý'),
-(3, 3, '2024-09-13', '09:00', '11:00', 120, 300000, 'Đã thanh toán'),
-(4, 4, '2024-09-14', '17:00', '19:00', 120, 600000, 'Đã thanh toán'),
-(5, 5, '2024-09-15', '08:00', '10:00', 120, 500000, 'Đang xử lý'),
-(6, 6, '2024-09-16', '18:00', '20:00', 120, 360000, 'Đã thanh toán'),
-(7, 7, '2024-09-17', '15:00', '17:00', 120, 260000, 'Đã thanh toán');
+(1, 1, '2024-09-10', '08:00', '10:00', 'Đã thanh toán'),
+(2, 2, '2024-09-12', '14:00', '16:00','Đang xử lý'),
+(3, 3, '2024-09-13', '09:00', '11:00', 'Đã thanh toán'),
+(4, 4, '2024-09-14', '17:00', '19:00','Đã thanh toán'),
+(5, 5, '2024-09-15', '08:00', '10:00', 'Đang xử lý'),
+(6, 6, '2024-09-16', '18:00', '20:00', 'Đã thanh toán'),
+(7, 7, '2024-09-17', '15:00', '17:00', 'Đã thanh toán');
 
 GO
 

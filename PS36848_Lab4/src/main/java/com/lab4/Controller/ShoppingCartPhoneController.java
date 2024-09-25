@@ -11,12 +11,13 @@ import com.lab4.service.ShoppingCartService;
 
 
 @Controller
-public class ShoppingCartController {
+public class ShoppingCartPhoneController {
 
 	@Autowired
 	ShoppingCartService cart; // tiêm Spring Bean đã tạo
-
-	@RequestMapping("/view")
+	
+	
+	@RequestMapping("phone/view")
 	public String view(Model model) {
 		model.addAttribute("cart", cart);
 		model.addAttribute("Count", cart.getCount());
