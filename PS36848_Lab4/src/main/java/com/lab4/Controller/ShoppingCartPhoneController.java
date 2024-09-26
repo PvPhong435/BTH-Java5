@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,8 @@ import com.lab4.Model.SmartPhone;
 import com.lab4.service.ShoppingCartService;
 import com.lab4.service.ShoppingCartServicePhone;
 import com.lab4.util.Phone;
+
+import jakarta.validation.Valid;
 
 import javax.mail.*;
 import javax.mail.internet.*;
@@ -87,57 +90,65 @@ public class ShoppingCartPhoneController {
     }
 	
 	@RequestMapping("/phone/order")
-	public String order(@ModelAttribute("customer") Customer customer)
+	public String order(@ModelAttribute("customer") @Valid Customer customer, BindingResult result,Model model)
 	{
-		//customer.setListPhone(cart);
-		try {
-			 Properties properties = new Properties();
-		        properties.put("mail.smtp.host", "smtp.gmail.com");
-		        properties.put("mail.smtp.port", "587");
-		        properties.put("mail.smtp.auth", "true");
-		        properties.put("mail.smtp.starttls.enable", "true");
+		if (result.hasErrors()) {
+			model.addAttribute("message", "Some fields are not valid. Please fix!");
+			System.out.println("Some fields are not valid. Please fix!"+result.toString());
+			return "pay";
+		} else {
 			
-		        final String myEmail = "phongpvps36848@fpt.edu.vn";
-		        final String password = "hghm ugqp puja zqpk";
-		        
-		        Session session = Session.getInstance(properties, new Authenticator() {
-		            @Override
-		            protected PasswordAuthentication getPasswordAuthentication() {
-		                return new PasswordAuthentication(myEmail, password);
-		            }
-		        });
-		        StringBuilder listPhone=new StringBuilder("-----------------\n");
-		        List<SmartPhone> ds=new ArrayList<SmartPhone>();
-				for(SmartPhone phone:cart.getPhones())
-				{
-					ds.add(phone);
-				}
-				customer.setListPhone(ds);
-		        int stt=1;
-		        for(SmartPhone sp:customer.getListPhone())
-		        {
-		        	listPhone.append(stt+++"| Tên Sản Phẩm: "+sp.getName()+"| Giá: "+sp.getPrice()+"| Số Lượng: "+sp.getQty()+"\n");
-		        	
-		        }
-		        String messageText=" Họ Và Tên: "+customer.getName()+
-		        					"\n Số Điện Thoại: "+customer.getPhone()+
-		        					"\n Địa Chỉ: "+customer.getAddress()+
-		        					"\nDanh Sách Sản Phẩm Bạn Đã Đặt: \n"+
-		        					 listPhone.toString();
-		        
-		        System.out.println(messageText);
-		        Message message = prepareMessage(session, myEmail, customer.getEmail(), "Xác Thực đặt hàng", messageText);
-		        
-		        
-		        Transport.send(message);
-		        System.out.println("Email đã được gửi thành công!");
-		        
-		        return "redirect:/phone/clear";
-		        
-		} catch (Exception e) {
-			System.out.println("Email đã được gửi Thất Bại!"+e.toString());
-			return "redirect:/phone/gotoPay";
+			try {
+				 Properties properties = new Properties();
+			        properties.put("mail.smtp.host", "smtp.gmail.com");
+			        properties.put("mail.smtp.port", "587");
+			        properties.put("mail.smtp.auth", "true");
+			        properties.put("mail.smtp.starttls.enable", "true");
+				
+			        final String myEmail = "phongpvps36848@fpt.edu.vn";
+			        final String password = "hghm ugqp puja zqpk";
+			        
+			        Session session = Session.getInstance(properties, new Authenticator() {
+			            @Override
+			            protected PasswordAuthentication getPasswordAuthentication() {
+			                return new PasswordAuthentication(myEmail, password);
+			            }
+			        });
+			        StringBuilder listPhone=new StringBuilder("-----------------\n");
+			        List<SmartPhone> ds=new ArrayList<SmartPhone>();
+					for(SmartPhone phone:cart.getPhones())
+					{
+						ds.add(phone);
+					}
+					customer.setListPhone(ds);
+			        int stt=1;
+			        for(SmartPhone sp:customer.getListPhone())
+			        {
+			        	listPhone.append(stt+++"| Tên Sản Phẩm: "+sp.getName()+"| Giá: "+sp.getPrice()+"| Số Lượng: "+sp.getQty()+"\n");
+			        	
+			        }
+			        String messageText=" Họ Và Tên: "+customer.getName()+
+			        					"\n Số Điện Thoại: "+customer.getPhone()+
+			        					"\n Địa Chỉ: "+customer.getAddress()+
+			        					"\nDanh Sách Sản Phẩm Bạn Đã Đặt: \n"+
+			        					 listPhone.toString();
+			        
+			        System.out.println(messageText);
+			        Message message = prepareMessage(session, myEmail, customer.getEmail(), "Xác Thực đặt hàng", messageText);
+			        
+			        
+			        Transport.send(message);
+			        System.out.println("Email đã được gửi thành công!");
+			        
+			        return "redirect:/phone/clear";
+			        
+			} catch (Exception e) {
+				System.out.println("Email đã được gửi Thất Bại!"+e.toString());
+				return "redirect:/phone/gotoPay";
+			}
 		}
+		//customer.setListPhone(cart);
+		
 		
 	}
 	

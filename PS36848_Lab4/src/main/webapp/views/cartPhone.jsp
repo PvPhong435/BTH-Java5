@@ -102,5 +102,33 @@
 			</div>
 		</div>
 	</div>
+	<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const shippingSelect = document.getElementById('shipping');
+
+        // Lắng nghe sự kiện thay đổi trên dropdown
+        shippingSelect.addEventListener('change', function () {
+            const selectedOption = shippingSelect.value;
+
+            // Gửi yêu cầu đến API khi người dùng chọn phương thức vận chuyển
+            fetch('https://api.example.com/shipping', {
+                method: 'GET', // Hoặc 'POST' tùy vào API
+                headers: {
+                    'Authorization': 'Bearer 46c591b3-7c03-11ef-8b03-d2df31ebdf7a', // Gán token API vào header
+                    'Content-Type': 'application/json' // Thêm header nếu cần
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data); // Xử lý dữ liệu trả về từ API ở đây
+                // Có thể cập nhật giao diện người dùng với dữ liệu nhận được
+            })
+            .catch(error => {
+                console.error('Error:', error); // Xử lý lỗi ở đây
+            });
+        });
+    });
+</script>
+	
 </body>
 </html>
