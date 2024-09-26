@@ -11,7 +11,7 @@ import org.springframework.web.client.RestTemplate;
 public class ShippingService {
 
     private static final String API_URL = "https://api.grab.com/v1/..."; // Thay đổi endpoint theo API cụ thể
-    private final String API_KEY = "YOUR_API_KEY"; // Thay đổi với API key của bạn
+    private final String API_KEY = "46c591b3-7c03-11ef-8b03-d2df31ebdf7a"; // Thay đổi với API key của bạn
 
     public ShippingCostResponse calculateShippingCost(ShippingRequest request) {
         RestTemplate restTemplate = new RestTemplate();

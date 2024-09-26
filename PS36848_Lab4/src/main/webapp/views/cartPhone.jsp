@@ -77,22 +77,44 @@
 							<p class="mb-0">$ ${Amount}</p>
 						</div>
 						<hr>
-						<form>
-							<div class="form-group">
-								<label for="shipping">Shipping</label>
-								<select id="shipping" class="form-control">
-									<option>Standard Delivery - $5.00</option>
-								</select>
-							</div>
-							<div class="form-group">
-								<label for="code">Promo Code</label>
-								<input type="text" id="code" class="form-control" placeholder="Enter your code">
-							</div>
+						<form id="shipping-form">
+						    <div class="form-group">
+						        <label for="from_district">From District</label>
+						        <select id="from_district" class="form-control">
+						            <option value="">Select From District</option>
+						            <!-- Các quận/huyện sẽ được thêm vào đây qua JavaScript -->
+						        </select>
+						    </div>
+						    <div class="form-group">
+						        <label for="to_district">To District</label>
+						        <select id="to_district" class="form-control">
+						            <option value="">Select To District</option>
+						            <!-- Các quận/huyện sẽ được thêm vào đây qua JavaScript -->
+						        </select>
+						    </div>
+						    <div class="form-group">
+						        <label for="to_ward">To Ward</label>
+						        <select id="to_ward" class="form-control">
+						            <option value="">Select To Ward</option>
+						            <!-- Các phường/xã sẽ được thêm vào đây qua JavaScript -->
+						        </select>
+						    </div>
+						    <div class="form-group">
+						        <label for="shipping">Shipping</label>
+						        <select id="shipping" class="form-control">
+						            <option value="0">GHN Standard Delivery</option>
+						        </select>
+						    </div>
+						    <div class="form-group">
+						        <label for="code">Promo Code</label>
+						        <input type="text" id="code" class="form-control" placeholder="Enter your code">
+						    </div>
 						</form>
+
 						<hr>
 						<div class="d-flex justify-content-between">
 							<h5>Total</h5>
-							<h5>$ ${Amount + 5}</h5>
+							<h5 id="total-price">$ ${Amount + 5}</h5>
 						</div>
 						<div class="text-center">
 						    <a href="/phone/gotoPay" class="btn btn-outline-primary">Check Out</a>
@@ -103,32 +125,104 @@
 		</div>
 	</div>
 	<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const shippingSelect = document.getElementById('shipping');
+	document.addEventListener("DOMContentLoaded", function () {
+	    const fromDistrictSelect = document.getElementById('from_district');
+	    const toDistrictSelect = document.getElementById('to_district');
+	    const toWardSelect = document.getElementById('to_ward');
 
-        // Lắng nghe sự kiện thay đổi trên dropdown
-        shippingSelect.addEventListener('change', function () {
-            const selectedOption = shippingSelect.value;
+	    // Lấy danh sách quận/huyện
+	    fetch('https://dev-online.ghtkl.com/api/district', {
+	        method: 'GET',
+	        headers: {
+	            'Token': '46c591b3-7c03-11ef-8b03-d2df31ebdf7a'
+	        }
+	    })
+	    .then(response => response.json())
+	    .then(data => {
+	        if (Array.isArray(data)) {
+	            data.forEach(district => {
+	                const option = document.createElement('option');
+	                option.value = district.id; // id quận/huyện
+	                option.textContent = district.name; // Tên quận/huyện
+	                fromDistrictSelect.appendChild(option);
+	                toDistrictSelect.appendChild(option.cloneNode(true)); // Thêm vào dropdown đích đến
+	            });
+	        } else {
+	            console.error('Invalid data format:', data);
+	        }
+	    })
+	    .catch(error => {
+	        console.error('Error:', error);
+	    });
 
-            // Gửi yêu cầu đến API khi người dùng chọn phương thức vận chuyển
-            fetch('https://api.example.com/shipping', {
-                method: 'GET', // Hoặc 'POST' tùy vào API
-                headers: {
-                    'Authorization': 'Bearer 46c591b3-7c03-11ef-8b03-d2df31ebdf7a', // Gán token API vào header
-                    'Content-Type': 'application/json' // Thêm header nếu cần
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data); // Xử lý dữ liệu trả về từ API ở đây
-                // Có thể cập nhật giao diện người dùng với dữ liệu nhận được
-            })
-            .catch(error => {
-                console.error('Error:', error); // Xử lý lỗi ở đây
-            });
-        });
-    });
-</script>
-	
+	    // Lắng nghe sự kiện thay đổi trên dropdown quận/huyện để lấy phường/xã
+	    toDistrictSelect.addEventListener('change', function () {
+	        const districtId = this.value;
+
+	        fetch(`https://dev-online.ghtkl.com/api/ward?district_id=${districtId}`, {
+	            method: 'GET',
+	            headers: {
+	                'Token': '46c591b3-7c03-11ef-8b03-d2df31ebdf7a'
+	            }
+	        })
+	        .then(response => response.json())
+	        .then(data => {
+	            if (Array.isArray(data)) {
+	                toWardSelect.innerHTML = '<option value="">Select To Ward</option>'; // Xóa các phường/xã cũ
+	                data.forEach(ward => {
+	                    const option = document.createElement('option');
+	                    option.value = ward.code; // Mã phường/xã
+	                    option.textContent = ward.name; // Tên phường/xã
+	                    toWardSelect.appendChild(option);
+	                });
+	            } else {
+	                console.error('Invalid data format for wards:', data);
+	            }
+	        })
+	        .catch(error => {
+	            console.error('Error fetching wards:', error);
+	        });
+	    });
+
+	    // Lắng nghe sự kiện thay đổi trên dropdown vận chuyển
+	    const shippingSelect = document.getElementById('shipping');
+	    const totalPriceElement = document.getElementById('total-price');
+
+	    shippingSelect.addEventListener('change', function () {
+	        const selectedOption = shippingSelect.value;
+
+	        const requestBody = {
+	            "service_id": selectedOption,
+	            "from_district_id": fromDistrictSelect.value,
+	            "to_district_id": toDistrictSelect.value,
+	            "to_ward_code": toWardSelect.value,
+	            "weight": 1000,
+	            "length": 10,
+	            "width": 10,
+	            "height": 10
+	        };
+
+	        fetch('https://dev-online.ghtkl.com/api/shipping-calculator', {
+	            method: 'POST',
+	            headers: {
+	                'Token': '46c591b3-7c03-11ef-8b03-d2df31ebdf7a',
+	                'Content-Type': 'application/json'
+	            },
+	            body: JSON.stringify(requestBody)
+	        })
+	        .then(response => response.json())
+	        .then(data => {
+	            if (data && data.data && data.data.total) {
+	                const shippingCost = data.data.total;
+	                const totalPrice = ${Amount} + shippingCost;
+	                totalPriceElement.textContent = `$ ${totalPrice.toFixed(2)}`;
+	            }
+	        })
+	        .catch(error => {
+	            console.error('Error:', error);
+	        });
+	    });
+	});
+	</script>
 </body>
 </html>
