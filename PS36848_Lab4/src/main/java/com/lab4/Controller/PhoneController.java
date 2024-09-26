@@ -23,10 +23,6 @@ public class PhoneController {
 	{
 		model.addAttribute("phones", Phone.phone.values());
 		model.addAttribute("count", cart.getCount());
-		model.addAttribute("message", "Hello controller");
-		System.out.println(SP.item.values());
-		System.out.println("Hello");
-		
 		return "indexPhone";
 	}
 }

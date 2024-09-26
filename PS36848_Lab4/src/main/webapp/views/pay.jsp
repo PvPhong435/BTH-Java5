@@ -1,3 +1,4 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
@@ -13,7 +14,7 @@
         <h2 class="text-center">Thông tin đặt mua sản phẩm</h2>
         
         <!-- Spring form bắt đầu -->
-        <form:form action="submitOrder" method="POST" modelAttribute="customerOrder" class="mt-4">
+        <form:form action="/phone/order" method="POST" modelAttribute="customer" class="mt-4">
             <div class="form-group">
                 <label for="name">Tên khách hàng</label>
                 <form:input path="name" id="name" cssClass="form-control" placeholder="Nhập tên của bạn" required="true" />
@@ -30,19 +31,25 @@
                 <label for="address">Địa chỉ</label>
                 <form:textarea path="address" id="address" cssClass="form-control" rows="3" placeholder="Nhập địa chỉ của bạn" required="true" />
             </div>
-            <div class="form-group">
-                <label for="product">Sản phẩm muốn mua</label>
-                <form:select path="product" id="product" cssClass="form-control">
-                    <form:option value="" label="Chọn sản phẩm" />
-                    <form:option value="Sản phẩm A" label="Sản phẩm A" />
-                    <form:option value="Sản phẩm B" label="Sản phẩm B" />
-                    <form:option value="Sản phẩm C" label="Sản phẩm C" />
-                </form:select>
-            </div>
-            <div class="form-group">
-                <label for="quantity">Số lượng</label>
-                <form:input path="quantity" id="quantity" type="number" min="1" cssClass="form-control" placeholder="Nhập số lượng" required="true" />
-            </div>
+			<div class="form-group">
+			    <label for="listPhone">Sản phẩm đã chọn</label>
+			    <ul class="list-unstyled border border-primary p-3">
+			        <c:forEach var="phone" items="${customer.listPhone}">
+			            <li>
+			                <img src="/image/${phone.image[0]}" alt="${phone.name}" style="width: 50px; height: auto; margin-right: 10px;" />
+			                Tên Sản Phẩm: ${phone.name} | Giá: ${phone.price}$ | Số Lượng: ${phone.qty}
+			                <br>
+			                <hr>
+			            </li>
+			        </c:forEach>
+			    </ul>
+			</div><div class="form-group">
+			    <label class="border border-primary p-3" for="listPhone">Tổng Tiền : ${Amount}$</label>
+			    
+			</div>
+
+
+            
             <button type="submit" class="btn btn-primary btn-block">Đặt mua</button>
         </form:form>
         <!-- Kết thúc Spring form -->

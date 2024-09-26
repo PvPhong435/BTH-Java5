@@ -1,72 +1,49 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Home page Products</title>
-    <link rel="stylesheet" href="/view/css/shopee.css">
+    <title>Chi tiết sản phẩm</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <style type="text/css">
-        .tn {
-            color: white;
-            position: relative;
-            bottom: 13px;
-            right: 14px;
-            background-color: #ff4500;
-            border-radius: 50%;
-            padding: 2px 8px;
+    <style>
+        .carousel-item img {
+            max-height: 500px;
+            object-fit: cover;
         }
-        .product-card {
-            transition: transform 0.2s;
-            cursor: pointer;
+        .product-details {
+            margin-top: 20px;
         }
-        .product-card:hover {
-            transform: scale(1.05);
-        }
-        .product-details .price {
-            font-size: 1.25rem;
+        .price {
+            font-size: 1.5rem;
             font-weight: bold;
+            color: red;
         }
         .btn-cart {
-            margin-top: 10px;
-            font-size: 0.9rem;
+            font-size: 1.1rem;
+            padding: 10px 20px;
         }
-        .card img {
-            object-fit: cover;
-            height: 200px;
-            width: 100%;
-        }
-        .gio {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-        }
-        .product-link {
-            text-decoration: none;
-            color: inherit;
+        .product-container {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
 <body>
 
-<div class="container my-4">
-    <h1 class="text-center text-success mb-4">Welcome to Shopping Cart</h1>
-    <h1 class="text-center text-success mb-4">${message}</h1>
-
-    <div class="row">
-        <c:forEach var="item" items="${phones}">
-            <div class="col-md-3">
-                <!-- Thẻ <a> bao toàn bộ sản phẩm -->
-                <a href="/phone/${item.id}" class="product-link">
+<div class="container mt-5">
+    <div class="product-container">
+        <div class="row">
+            <div class="col-md-6">
+               
                     <div class="card p-3 product-card">
                         <!-- Mỗi carousel có ID duy nhất dựa trên item.id -->
                         <div id="carousel${item.id}" class="carousel slide" data-ride="carousel">
@@ -99,7 +76,7 @@
                             </a>
                         </div>
 
-                        <div class="product-details mt-3 text-center">
+                        <div class="product-details mt-6 text-center">
                             <span class="price text-danger">Price: $ ${item.price}</span>
                             <p class="mt-2">Name: ${item.name}</p>
                             <p class="mt-2">Ram: ${item.ram}</p>
@@ -109,7 +86,6 @@
                             <!-- Bỏ form 'Add to cart' ra khỏi thẻ <a> -->
                         </div>
                     </div>
-                </a>
                 <!-- Form 'Add to cart' tách riêng bên ngoài để không ảnh hưởng -->
                 <form method="POST" action="/phone/add/${item.id}">
                     <button type="submit" class="btn btn-success btn-cart btn-block">
@@ -117,21 +93,7 @@
                     </button>
                 </form>
             </div>
-        </c:forEach>
-    </div>
-
-    <div class="text-center my-4">
-        <a href="/phone/view" class="text-decoration-none">
-            <div class="gio">
-                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-cart3"
-                     viewBox="0 0 16 16">
-                    <path
-                        d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l.84 4.479 9.144-.459L13.89 4H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-                </svg>
-                <span class="badge tn">${count}</span>
-                <div>Giỏ Hàng</div>
-            </div>
-        </a>
+        </div>
     </div>
 </div>
 

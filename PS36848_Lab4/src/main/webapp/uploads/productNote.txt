@@ -1,0 +1,35 @@
+1
+Samsung Galaxy S23
+999.99
+8GB
+128GB
+image1.jpg,image2.jpg,image3.jpg
+Android
+This is a description of Samsung Galaxy S23.
+
+2
+iPhone 15 Pro
+1299.99
+6GB
+256GB
+image1.jpg,image2.jpg,image3.jpg
+iOS
+This is a description of iPhone 15 Pro.
+
+3
+iPhone 11 Pro
+1099.99
+6GB
+256GB
+image1.jpg,image2.jpg,image3.jpg
+iOS
+This is a description of iPhone 15 Pro.
+
+4
+iPhone 11 Pro
+1099.99
+6GB
+256GB
+image1.jpg,image2.jpg,image3.jpg
+iOS
+This is a description of iPhone 15 Pro.

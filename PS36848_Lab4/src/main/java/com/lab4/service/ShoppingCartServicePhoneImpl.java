@@ -52,7 +52,8 @@ public class ShoppingCartServicePhoneImpl implements ShoppingCartServicePhone {
 		if(qty.equals("minus") && SmartPhone.getQty()>0) {
 			SmartPhone.setQty(SmartPhone.getQty()-1);
 			if(SmartPhone.getQty() == 0)
-				this.remove(id);
+				//this.remove(id);
+				map.remove(id);
 		}else if(qty.equals("plus") &&SmartPhone.getQty()<100) {
 			SmartPhone.setQty(SmartPhone.getQty()+1);
 		}

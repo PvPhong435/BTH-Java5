@@ -13,41 +13,51 @@
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
 </head>
+<style>
+    .custom-header {
+        background-color: #dc3545; /* Màu nền (bg-danger) */
+        color: white; /* Đổi màu font thành đỏ */
+        border-left: 2px solid #dc3545; /* Viền bên trái */
+        border-right: 2px solid #dc3545; /* Viền bên phải */
+        border-top-left-radius: 10px; /* Bo tròn góc trên bên trái */
+        border-top-right-radius: 10px; /* Bo tròn góc trên bên phải */
+    }
+</style>
 <body>
 	<div class="container mt-5">
 		<div class="row">
 			<div class="col-md-8">
 				<div class="card">
-					<div class="card-header bg-primary text-white">
-						<h4 class="mb-0">Shopping Cart</h4>
-						<span class="badge badge-light float-right">${Count} items</span>
+					<div class="card-header custom-header">
+					    <h4 class="mb-0">Shopping Cart</h4>
+					    <span class="badge badge-light float-right">${Count} items in cart</span>
 					</div>
 					<div class="card-body">
-						<c:forEach var="items" items="${cart.items}">
+						<c:forEach var="items" items="${cart.phones}">
 							<div class="row align-items-center border-bottom pb-3 mb-3">
 								<div class="col-2">
-									<img src="/image/${items.image}" class="img-fluid" style="max-width: 100%; height: auto;">
+									<img src="/image/${items.image[0]}" class="img-fluid" style="max-width: 100%; height: auto;">
 								</div>
 								<div class="col-4">
 									<p class="text-muted mb-1">ID: ${items.id}</p>
 									<h5 class="mb-0">${items.name}</h5>
 								</div>
 								<div class="col-2">
-									<a href="/update/${items.id}/minus" class="btn btn-outline-secondary btn-sm">-</a>
+									<a href="/phone/update/${items.id}/minus" class="btn btn-outline-secondary btn-sm">-</a>
 									<span class="mx-2">${items.qty}</span>
-									<a href="/update/${items.id}/plus" class="btn btn-outline-secondary btn-sm">+</a>
+									<a href="/phone/update/${items.id}/plus" class="btn btn-outline-secondary btn-sm">+</a>
 								</div>
 								<div class="col-3 text-right">
-									<h6 class="mb-0">&euro; ${items.price * items.qty}</h6>
+									<h6 class="mb-0">$ ${items.price * items.qty}</h6>
 								</div>
 								<div class="col-1 text-right">
-									<a href="/remove/${items.id}" class="text-danger"><i class="fa fa-times"></i></a>
+									<a href="/phone/remove/${items.id}" class="text-danger"><i class="fa fa-times"></i></a>
 								</div>
 							</div>
 						</c:forEach>
 						<div class="mt-3">
-							<a href="/" class="btn btn-outline-primary">Back to shop</a>
-							<a href="/clear" class="btn btn-danger float-right">Clear Cart</a>
+							<a href="/Phone" class="btn btn-outline-primary">Back to shop</a>
+							<a href="/phone/clear" class="btn btn-danger float-right">Clear Cart</a>
 						</div>
 					</div>
 				</div>
@@ -64,14 +74,14 @@
 						</div>
 						<div class="d-flex justify-content-between">
 							<p class="mb-0">Subtotal</p>
-							<p class="mb-0">&euro; ${Amount}</p>
+							<p class="mb-0">$ ${Amount}</p>
 						</div>
 						<hr>
 						<form>
 							<div class="form-group">
 								<label for="shipping">Shipping</label>
 								<select id="shipping" class="form-control">
-									<option>Standard Delivery - &euro;5.00</option>
+									<option>Standard Delivery - $5.00</option>
 								</select>
 							</div>
 							<div class="form-group">
@@ -82,9 +92,11 @@
 						<hr>
 						<div class="d-flex justify-content-between">
 							<h5>Total</h5>
-							<h5>&euro; ${Amount + 5}</h5>
+							<h5>$ ${Amount + 5}</h5>
 						</div>
-						<a href="/gotoPay" class="btn btn-outline-primary">Back to shop</a>
+						<div class="text-center">
+						    <a href="/phone/gotoPay" class="btn btn-outline-primary">Check Out</a>
+						</div>
 					</div>
 				</div>
 			</div>
