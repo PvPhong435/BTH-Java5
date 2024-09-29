@@ -99,20 +99,20 @@
                             </a>
                         </div>
 
-                        <div class="product-details mt-3 text-center">
+                        <div class="product-details mt-3">
                             <span class="price text-danger">Price: $ ${item.price}</span>
-                            <p class="mt-2">Name: ${item.name}</p>
-                            <p class="mt-2">Ram: ${item.ram}</p>
-                            <p class="mt-2">Rom: ${item.rom}</p>
-                            <p class="mt-2">Operating System: ${item.operatingSystem}</p>
-                            <p class="mt-2">Descripe: ${item.descripe}</p>
+                            <b><p class="mt-2">Name:</b> ${item.name}</p>
+                            <b><p class="mt-2">Ram:</b> ${item.ram}</p>
+                            <b><p class="mt-2">Rom:</b> ${item.rom}</p>
+                            <b><p class="mt-2">Operating System:</b> ${item.operatingSystem}</p>
+                            <b><p class="mt-2">Descripe:</b> ${item.descripe}</p>
                             <!-- Bỏ form 'Add to cart' ra khỏi thẻ <a> -->
                         </div>
                     </div>
                 </a>
                 <!-- Form 'Add to cart' tách riêng bên ngoài để không ảnh hưởng -->
                 <form method="POST" action="/phone/add/${item.id}">
-                    <button type="submit" class="btn btn-success btn-cart btn-block">
+                    <button type="submit" class="btn btn-success btn-cart btn-block  md-3">
                         <i class="fa fa-cart-plus"></i> Add to cart
                     </button>
                 </form>

@@ -27,6 +27,14 @@ public class Phone {
 				new String[] { "iphone-15.png", "iphone14.jpg", "iPhone13.jpg" }, "IOS", "the iphone 13 ", 1));
 		phone.put(4, new SmartPhone(4, "Iphone 14", 16000.0, "8gb", "128gb",
 				new String[] { "iPhone13.jpg", "iphone-15.png", "iphone14.jpg" }, "IOS", "the iphone 14 ", 1));
+		phone.put(5, new SmartPhone(5, "Iphone 15", 17000.0, "8gb", "256gb",
+				new String[] { "iPhone13.jpg", "iphone-15.png", "iphone14.jpg" }, "IOS", "the iphone 15 ", 1));
+		phone.put(6, new SmartPhone(6, "Iphone 16", 18000.0, "8gb", "128gb",
+				new String[] { "iphone-15.png", "iphone14.jpg", "iPhone13.jpg" }, "IOS", "the iphone 16 ", 1));
+		phone.put(7, new SmartPhone(7, "Iphone XS MAX", 15000.0, "8gb", "256gb",
+				new String[] { "iphone-15.png", "iphone14.jpg", "iPhone13.jpg" }, "IOS", "the iphone XS MAX ", 1));
+		phone.put(8, new SmartPhone(3, "Iphone XS", 15000.0, "8gb", "128gb",
+				new String[] { "iphone-15.png", "iphone14.jpg", "iPhone13.jpg" }, "IOS", "the iphone XS ", 1));
 	}
 
 	@Autowired
