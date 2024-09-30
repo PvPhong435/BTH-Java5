@@ -3,6 +3,7 @@ package com.java5.slide5.entity;
 
 
 import java.io.Serializable;
+
 import java.util.List;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
