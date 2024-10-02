@@ -2,6 +2,7 @@ package com.lab5.entity;
 import java.io.Serializable;
 import java.util.List;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
@@ -16,9 +17,20 @@ import lombok.Data;
 @Table(name = "Categories")
 public class Category implements Serializable{
 	@Id
-	String id;
+	Integer id;
+	@Column(name = "Name")
 	String name;
 	@JsonIgnore
 	@OneToMany(mappedBy = "category")
 	List<Product> products;
+	
+	@Override
+	public String toString() {
+	    return "Category{" +
+	            "id=" + id +
+	            ", name='" + name + '\'' +
+	            // Không gọi toString() của danh sách products để tránh đệ quy
+	            '}';
+	}
+
 }

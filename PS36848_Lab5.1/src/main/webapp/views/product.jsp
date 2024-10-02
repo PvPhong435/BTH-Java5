@@ -77,11 +77,20 @@
                     <div class="card product-card">
                         <div id="carousel-${product.id}" class="carousel slide" data-bs-ride="carousel">
                             <div class="carousel-inner">
-                                <c:forEach var="image" items="${product.productImages}" varStatus="status">
-                                    <div class="carousel-item ${status.index == 0 ? 'active' : ''}">
-                                        <img src="/Image/${image.imageLink}" class="d-block" alt="${product.name}">
-                                    </div>
-                                </c:forEach>
+                                <c:choose>
+								    <c:when test="${empty product.productImages}">
+								        <div class="carousel-item active">
+								            <img src="/Image/NullPic.jpg" class="d-block" alt="Default Image">
+								        </div>
+								    </c:when>
+								    <c:otherwise>
+								        <c:forEach var="image" items="${product.productImages}" varStatus="status">
+								            <div class="carousel-item ${status.index == 0 ? 'active' : ''}">
+								                <img src="/Image/${image.imageLink}" class="d-block" alt="${product.name}">
+								            </div>
+								        </c:forEach>
+								    </c:otherwise>
+								</c:choose>
                             </div>
                             <button class="carousel-control-prev" type="button" data-bs-target="#carousel-${product.id}" data-bs-slide="prev">
                                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>

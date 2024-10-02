@@ -16,6 +16,10 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -27,21 +31,42 @@ import lombok.Data;
 public class Product  implements Serializable{
 	@Id	
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@NotNull (message = "ID is null")
 	Integer id;
+	
+//	@NotBlank(message = "Name is null")
 	String Name;
+	
+//	@NotNull(message = "Price is null")
+	@DecimalMin(message = "Price must more than 1",value = "1")
 	Double Price;
+	
 	@Temporal(TemporalType.DATE)
 	@Column(name = "Createdate")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
+//	@NotNull(message = "DateTime is null")
 	Date CreateDate = new Date();
 	Boolean Available;
 	@ManyToOne
 	@JoinColumn(name = "Categoryid")
 	Category category;
+	
 	@JsonIgnore
 	@OneToMany(mappedBy = "product")
 	List<OrderDetail> orderDetails;	
 	@OneToMany(mappedBy="product")
+//	@Valid
 	List<ProductImage> productImages;
+	
+	@Override
+	public String toString() {
+	    return "Product{" +
+	            "id=" + id +
+	            ", name='" + Name + '\'' +
+	            ", price=" + Price +
+	            // Tránh gọi toString() của đối tượng Category để tránh đệ quy
+	            '}';
+	}
+
 	
 }

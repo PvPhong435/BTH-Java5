@@ -16,14 +16,24 @@
 <div class="col-md-6">
     <div id="productCarousel" class="carousel slide" data-ride="carousel">
         <div class="carousel-inner">
-            <c:forEach items="${product.productImages}" var="image" varStatus="status">
-                <div class="carousel-item ${status.first ? 'active' : ''}">
-                    <img src="/Image/${image.imageLink != null ? image.imageLink : 'NullPic.jpg'}" 
-					     class="d-block w-100" 
-					     alt="Product Image">
+		<c:choose>
+		    <c:when test="${empty product.productImages}">
+		        <div class="carousel-item active">
+		            <img src="/Image/NullPic.jpg" class="d-block" alt="Default Image" style="max-width: 100%; height: auto;">
+		        </div>
+		    </c:when>
+		    <c:otherwise>
+		        <c:forEach var="image" items="${product.productImages}" varStatus="status">
+		            <div class="carousel-item ${status.index == 0 ? 'active' : ''}">
+		                <img src="/Image/${image.imageLink}" class="d-block w-100" alt="${product.name}" style="max-width: 100%; height: auto;">
+		            </div>
+		        </c:forEach>
+		    </c:otherwise>
+		</c:choose>
 
-                </div>
-            </c:forEach>
+        
+           
+
         </div>
         <a class="carousel-control-prev" href="#productCarousel" role="button" data-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -43,18 +53,22 @@
 		        <div class="form-group">
 		            <label>ID</label>
 		            <form:input path="id" class="form-control" readonly="true" />
+		            <form:errors path="id" cssClass="text-danger" />
 		        </div>
 		        <div class="form-group">
 		            <label>Name</label>
 		            <form:input path="name" class="form-control" />
+		            <form:errors path="name" cssClass="text-danger" />
 		        </div>
 		        <div class="form-group">
 		            <label>Price</label>
 		            <form:input path="price" class="form-control" />
+		            <form:errors path="price" cssClass="text-danger" />
 		        </div>
 		        <div class="form-group">
 		            <label>Create Date</label>
 		            <form:input path="createDate" class="form-control" type="date" />
+		            <form:errors path="createDate" cssClass="text-danger" />
 		        </div>
 		        <div class="form-group">
 		            <label>Available</label>
@@ -69,8 +83,10 @@
 				        </c:forEach>
 				    </form:select>
 				</div>
-		        <button type="submit" class="btn btn-primary">Add</button>
+		        <button type="button" class="btn btn-primary" onclick="window.location.href='/productAddNew';">Add</button>
 		        <button type="submit" class="btn btn-secondary">Update</button>
+		        <button type="button" class="btn btn-danger" onclick="window.location.href='/productRemove/${product.id}';">Remove</button>
+				<button type="button" class="btn btn-danger" onclick="window.location.href='/productList';">Back To Product List</button>
 		    </form:form>
         </div>
     </div>
@@ -80,12 +96,13 @@
     <table class="table">
         <thead>
         <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Price</th>
-            <th>Create Date</th>
-            <th>Available</th>
-            <th>Category ID</th>
+            <th><a href="/productSort/id">ID</a></th>
+            <th><a href="/productSort/name">Name</a></th>
+            <th><a href="/productSort/price">Price</a></th>
+            <th><a href="/productSort/CreateDate">Create Date</a></th>
+            <th><a href="/productSort/Available">Available</a></th>
+            <th><a href="/productSort/">Category ID</a></th>
+            <th>
         </tr>
         </thead>
         <tbody>

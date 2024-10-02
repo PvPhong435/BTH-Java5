@@ -29,7 +29,7 @@ public class Category1Controller {
 	
 	@RequestMapping("/category1/sort")
 	public String index(Model model, @RequestParam("field") Optional<String> field) {
-		Sort sort = Sort.by(Direction.ASC, field.orElse("name"));
+		Sort sort = Sort.by(Direction.ASC, field.orElse("Name"));
 		List<Category> categories = dao.findAll(sort);
 		model.addAttribute("items", categories);
 		return "/category1/index";

@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.lab5.entity.Category;
 
 
-public interface CategoryDAO extends JpaRepository<Category, String>{
+public interface CategoryDAO extends JpaRepository<Category, Integer>{
 
 }

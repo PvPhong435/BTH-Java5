@@ -34,8 +34,8 @@ public class CategoryController {
 
 	@RequestMapping("/category/edit/{id}")
 	public String edit(Model model, @PathVariable("id") String id) {
-		Category item = categoryDao.findById(id).get();
-		model.addAttribute("item", item);
+		//Category item = categoryDao.findById(id).get();
+		//model.addAttribute("item", item);
 		List<Category> items = categoryDao.findAll();
 		model.addAttribute("items", items);
 		return "category/index";
@@ -58,7 +58,7 @@ public class CategoryController {
 
 	@RequestMapping("/category/delete/{id}")
 	public String create(@PathVariable("id") String id) {
-		categoryDao.deleteById(id);
+		//categoryDao.deleteById(id);
 	
 		return "redirect:/category/index";
 	}
