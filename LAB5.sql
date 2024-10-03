@@ -56,10 +56,10 @@ GO
 
 CREATE TABLE ProductImage
 (
-	ProductId INT,
-	imageLink NVARCHAR(50),
-	PRIMARY KEY(ProductId,imageLink),
-	FOREIGN KEY(ProductId) REFERENCES Products(Id)
+	product_id INT,
+	image_link NVARCHAR(50),
+	PRIMARY KEY(product_id,image_link),
+	FOREIGN KEY(product_id) REFERENCES Products(Id)
 );
 
 
@@ -113,7 +113,7 @@ VALUES
 GO
 
 -- Thêm dữ liệu vào bảng ProductImage
-INSERT INTO ProductImage (ProductId, imageLink)
+INSERT INTO ProductImage 
 VALUES 
 (1, 'iphone13_front.jpg'),
 (1, 'iphone13_back.jpg'),

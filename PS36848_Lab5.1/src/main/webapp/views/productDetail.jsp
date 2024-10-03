@@ -97,7 +97,7 @@
         <thead>
         <tr>
             <th><a href="/productSort/id">ID</a></th>
-            <th><a href="/productSort/name">Name</a></th>
+            <th><a href="/productSort/Name">Name</a></th>
             <th><a href="/productSort/price">Price</a></th>
             <th><a href="/productSort/CreateDate">Create Date</a></th>
             <th><a href="/productSort/Available">Available</a></th>

@@ -2,12 +2,17 @@ package com.lab5.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Controller;
@@ -28,6 +33,7 @@ import com.lab5.entity.Product;
 import com.lab5.entity.ProductImage;
 import com.lab5.entity.ProductImageId;
 
+import jakarta.servlet.ServletContext;
 import jakarta.validation.Valid;
 import lombok.val;
 
@@ -40,6 +46,10 @@ public class ProductController {
 	ProductImageDao productImageDao;
 	@Autowired
 	CategoryDAO categoryDao;
+	@Autowired
+	private ServletContext servletContext;
+	private int FIRST_PAGE_NUMBER = 0;
+	private int NUMBER_OF_ITEM_PER_PAGE = 4;
 	
 	Boolean sortChect=false;
 
@@ -48,6 +58,17 @@ public class ProductController {
 	{
 		model.addAttribute("products", productDao.findAll());
 		return "product";
+	}
+	
+	@RequestMapping("/productListPage")
+	public String getProductListPage(Model model, @RequestParam("page") Optional<Integer> page)
+	{
+		Pageable pageable = PageRequest.of(page.orElse(FIRST_PAGE_NUMBER), NUMBER_OF_ITEM_PER_PAGE);
+		Page<Product> pages = productDao.findAll(pageable);
+		List<Product> productList = pages.getContent();
+		model.addAttribute("products", productList);
+		model.addAttribute("page", pages);
+		return "product2";
 	}
 	
 	@RequestMapping("/productAdd")
@@ -137,50 +158,81 @@ public class ProductController {
 	}
 	
 	@RequestMapping("/productSaveAdd")
-	public String saveProductAdd(Model model, @Valid @ModelAttribute("product") Product product, 
-	                              @RequestParam("productImages") MultipartFile[] productImages,BindingResult result) {
-	    if(result.hasErrors())
-	    {
-	    	return "forward:/productAdd";
-	    }
-	    else
-	    {
-	    	// Lưu sản phẩm vào cơ sở dữ liệu
-		    productDao.save(product);
-		    
-		    // Kiểm tra xem sản phẩm đã được lưu thành công hay chưa
-		    if (productDao.findById(product.getId()) != null) {
-		        // Chuyển đổi MultipartFile[] sang List<ProductImage>
-		    	List<ProductImage> productImages1 = convertMultipartFilesToProductImages(productImages);
-		        product.setProductImages(productImages1); // Gán danh sách ảnh cho sản phẩm
+	public String saveProductAdd(Model model, @Valid @ModelAttribute("product") Product product,
+	                             @RequestParam("productImages") MultipartFile[] productImages, BindingResult result) {
+	    if (result.hasErrors()) {
+	        return "forward:/productAdd";
+	    } else {
+	        // Lưu sản phẩm vào cơ sở dữ liệu trước
+	        productDao.save(product);
 
-		     
+	        // Kiểm tra nếu sản phẩm đã được lưu thành công
+	        if (productDao.findById(product.getId()) != null) {
+	            List<ProductImage> imageList = new ArrayList<>();
+	            String uploadDir = servletContext.getRealPath("/Image/");
+	            File uploadDirectory = new File(uploadDir);
 
-		        // Chuyển hướng đến trang chi tiết sản phẩm
-		        return "redirect:/productDetail/" + product.getId();
-		    } else {
-		        return "product"; // Trả về trang để người dùng có thể chỉnh sửa lại
-		    }
+	            // Tạo thư mục nếu chưa tồn tại
+	            if (!uploadDirectory.exists()) {
+	                uploadDirectory.mkdirs();
+	            }
+
+	            // Duyệt qua từng file ảnh trong danh sách
+	            for (MultipartFile img : productImages) {
+	                if (!img.isEmpty()) {
+	                    try {
+	                        // Tạo tên file duy nhất
+	                        String fileName = img.getOriginalFilename();
+	                        System.out.println(fileName);
+	                        String filePath = Paths.get(uploadDir, fileName).toString();
+
+	                        // Lưu tệp vào thư mục
+	                        img.transferTo(new File(filePath));
+
+	                        // Tạo đối tượng ProductImage
+	                        ProductImage productImage = new ProductImage();
+	                        productImage.setProduct(product);
+	                        productImage.setImageLink(fileName); // Đường dẫn tương đối
+	                        imageList.add(productImage);
+	                    } catch (Exception e) {
+	                        e.printStackTrace(); // Ghi log lỗi để theo dõi
+	                        return "product";
+	                    }
+	                }
+	            }
+
+	            // Lưu tất cả ProductImage vào cơ sở dữ liệu
+	            productImageDao.saveAll(imageList);
+
+	            // Gán danh sách hình ảnh cho sản phẩm và lưu lại
+	            product.setProductImages(imageList);
+	            productDao.save(product);
+
+	            return "redirect:/productDetail/" + product.getId();
+	        } else {
+	            return "product";
+	        }
 	    }
-		
 	}
+
 	
-	public List<ProductImage> convertMultipartFilesToProductImages(MultipartFile[] files) {
-	    List<ProductImage> productImages = new ArrayList<>();
-	    for (MultipartFile file : files) {
-	        ProductImage productImage = new ProductImage();
-	        // Giả sử ProductImage có một thuộc tính imageData để lưu trữ dữ liệu hình ảnh
-	        productImage.setImageLink(file.getOriginalFilename());
-	        productImages.add(productImage);
-	    }
-	    return productImages;
-	}
+//	public List<ProductImage> convertMultipartFilesToProductImages(MultipartFile[] files) {
+//	    List<ProductImage> productImages = new ArrayList<>();
+//	    for (MultipartFile file : files) {
+//	        ProductImage productImage = new ProductImage();
+//	        // Giả sử ProductImage có một thuộc tính imageData để lưu trữ dữ liệu hình ảnh
+//	        productImage.setImageLink(file.getOriginalFilename());
+//	        productImages.add(productImage);
+//	    }
+//	    return productImages;
+//	}
 	
 	@RequestMapping("/productSort/{SortBy}")
 	public String SortProduct(@PathVariable("SortBy") String SortBy,Model model)
 	{
 		
 		Sort sort= Sort.by(Direction.DESC,SortBy);
+		System.out.println(SortBy);
 		if(sortChect)
 		{
 			sort = Sort.by(Direction.DESC,SortBy);
@@ -199,7 +251,5 @@ public class ProductController {
 	    model.addAttribute("products", sortedProducts);
 		return "productDetail";
 	}
-
-
 
 }
