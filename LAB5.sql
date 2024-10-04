@@ -54,7 +54,7 @@ CREATE TABLE Products
 
 GO
 
-CREATE TABLE ProductImage
+CREATE TABLE product_image
 (
 	product_id INT,
 	image_link NVARCHAR(50),
