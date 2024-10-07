@@ -38,7 +38,7 @@ import jakarta.validation.Valid;
 import lombok.val;
 
 @Controller
-public class ProductController {
+public class ProductControllerLab6 {
 	
 	@Autowired
 	ProductDAO productDao;
@@ -53,14 +53,14 @@ public class ProductController {
 	
 	Boolean sortChect=false;
 
-	@GetMapping("/productList")
+	@GetMapping("/Lab6")
 	public String getProductList(Model model)
 	{
 		model.addAttribute("products", productDao.findAll());
-		return "product";
+		return "productLab6";
 	}
 	
-	@RequestMapping("/productListPage")
+	@RequestMapping("/Lab6Page")
 	public String getProductListPage(Model model, @RequestParam("page") Optional<Integer> page)
 	{
 		Pageable pageable = PageRequest.of(page.orElse(FIRST_PAGE_NUMBER), NUMBER_OF_ITEM_PER_PAGE);
@@ -71,7 +71,7 @@ public class ProductController {
 		return "product2";
 	}
 	
-	@RequestMapping("/productAdd")
+	@RequestMapping("/Lab6Add")
 	public String GetProductAdd(Model model)
 	{
 		Product product=new Product();
@@ -85,7 +85,7 @@ public class ProductController {
 		return "productDetail";
 	}
 	
-	@RequestMapping("/productAddNew")
+	@RequestMapping("/Lab6AddNew")
 	public String GetProductAddNew(Model model)
 	{
 		Product product=new Product();
@@ -98,7 +98,7 @@ public class ProductController {
 		return "productAdd";
 	}
 	
-	@RequestMapping("/productDetail/{id}")
+	@RequestMapping("/Lab6Detail/{id}")
 	public String GetProductDetail(@PathVariable("id") int id,Model model)
 	{
 		Optional<Product> optionalProduct = productDao.findById(id);
@@ -116,7 +116,7 @@ public class ProductController {
 		
 	}
 	
-	@RequestMapping("/productSave")
+	@RequestMapping("/Lab6Save")
 	public String saveResult(Model model,@Valid @ModelAttribute("product") Product product,BindingResult result)
 	{
 		if(result.hasErrors())
@@ -139,7 +139,7 @@ public class ProductController {
 	
 	
 	
-	@GetMapping("/productRemove/{id}")
+	@GetMapping("/Lab6Remove/{id}")
 	public String removeProduct(@PathVariable("id") int id,Model model)
 	{
 		try {
@@ -157,7 +157,7 @@ public class ProductController {
 		return "redirect:/productList";
 	}
 	
-	@RequestMapping("/productSaveAdd")
+	@RequestMapping("/Lab6SaveAdd")
 	public String saveProductAdd(Model model, @Valid @ModelAttribute("product") Product product,
 	                             @RequestParam("productImages") MultipartFile[] productImages, BindingResult result) {
 	    if (result.hasErrors()) {
@@ -227,7 +227,7 @@ public class ProductController {
 //	    return productImages;
 //	}
 	
-	@RequestMapping("/productSort/{SortBy}")
+	@RequestMapping("/Lab6Sort/{SortBy}")
 	public String SortProduct(@PathVariable("SortBy") String SortBy,Model model)
 	{
 		
@@ -250,6 +250,38 @@ public class ProductController {
 	    
 	    model.addAttribute("products", sortedProducts);
 		return "productDetail";
+	}
+	
+	@RequestMapping("/Lab6Search")
+	public String seartByName(Model model,
+			@RequestParam("productName") String productName,
+			@RequestParam("priceFrom") Double priceFrom,
+			@RequestParam("priceTo") Double priceTo,
+			@RequestParam("sortOrder") String sortBy)
+	{
+		List<Product> products;
+		
+		if(sortBy.equalsIgnoreCase("non"))
+		{
+			products=productDao.findByNameContainingAndPriceBetween(productName, priceFrom, priceTo);
+		}
+		else
+		{
+			Sort sort;
+			if(sortBy.equalsIgnoreCase("asc"))
+			{
+				sort=Sort.by(Direction.ASC,"price");
+			}
+			else
+			{
+				sort=Sort.by(Direction.DESC,"price");
+			}
+			products=productDao.findByNameContainingAndPriceBetween(productName, priceFrom, priceTo,sort);
+		}
+		
+		model.addAttribute("products", products);
+		
+		return "productLab6";
 	}
 
 }
