@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -139,7 +141,7 @@
                         <div class="card-body">
                             <h5 class="card-title"><b>Name:</b> ${product.name}</h5>
                             <p class="card-text"><b>Price:</b> $${product.price}</p>
-                            <p class="card-text"><b>Date:</b> ${product.createDate}</p>
+                            <p class="card-text"><b>Date:</b> <fmt:formatDate value="${product.createDate}" pattern="dd/MM/yyyy" /></p>
                             <p class="card-text"><b>Category:</b> ${product.category.name}</p>
                             <div class="btn-center">
                                 <a href="/Lab6Detail/${product.id}" class="btn btn-success">Sửa Thông Tin</a>

@@ -79,17 +79,26 @@ public class ProductControllerLab6 {
 			@RequestParam("productName") Optional<String> productName,
 			@RequestParam("priceFrom") Optional<Double> priceFrom, @RequestParam("priceTo") Optional<Double> priceTo,
 			@RequestParam("sortOrder") Optional<String> sortBy) {
+		
+		if (checkLogin) {
+			model.addAttribute("loginButton", "Đăng Xuất");
+			accPresent=(Account)session.get("user");
+			model.addAttribute("username", accPresent.getUsername());
+			model.addAttribute("role", !accPresent.isAdmin()?"Nhân Viên":"Admin");
+			
+		} else {
+			model.addAttribute("loginButton", "Đăng Nhập");
+				accPresent=null;
+				model.addAttribute("username", "NULL");
+				model.addAttribute("role", "NULL");
+		}
 		if (!checkSort) {
 			Pageable pageable = PageRequest.of(page.orElse(FIRST_PAGE_NUMBER), NUMBER_OF_ITEM_PER_PAGE);
 			Page<Product> pages = productDao.findAll(pageable);
 			List<Product> productList = pages.getContent();
 			model.addAttribute("products", productList);
 			model.addAttribute("page", pages);
-			if (checkLogin) {
-				model.addAttribute("loginButton", "Đăng Xuất");
-			} else {
-				model.addAttribute("loginButton", "Đăng Nhập");
-			}
+			
 		} else {
 			Pageable pageable;
 			Page<Product> pages;
@@ -121,16 +130,6 @@ public class ProductControllerLab6 {
 			model.addAttribute("sortOrder", sortBy.orElse("non"));
 			model.addAttribute("products", products);
 			model.addAttribute("page", pages);
-			if(accPresent!=null)
-			{
-				model.addAttribute("username", accPresent.getUsername());
-				model.addAttribute("role", accPresent.isAdmin()?"Nhân Viên":"Admin");
-			}
-		}
-		if(accPresent!=null)
-		{
-			model.addAttribute("username", accPresent.getUsername());
-			model.addAttribute("role", !accPresent.isAdmin()?"Nhân Viên":"Admin");
 		}
 
 		return "productLab6";
@@ -219,7 +218,7 @@ public class ProductControllerLab6 {
 			System.out.println("Xóa dữ liệu Thất Bại");
 		}
 
-		return "redirect:/productList";
+		return "redirect:/Lab6";
 	}
 
 	@RequestMapping("/Lab6SaveAdd")
@@ -355,6 +354,12 @@ public class ProductControllerLab6 {
 			model.addAttribute("username", accPresent.getUsername());
 			model.addAttribute("role", !accPresent.isAdmin()?"Nhân Viên":"Admin");
 		}
+		else
+		{
+			model.addAttribute("username", "NULL");
+			model.addAttribute("role", "NULL");
+		}
+		
 		if (checkLogin) {
 			model.addAttribute("loginButton", "Đăng Xuất");
 		} else {
@@ -380,6 +385,11 @@ public class ProductControllerLab6 {
 			if (accountLogin != null)
 				session.set("user", null);
 			checkLogin = false;
+			accPresent=null;
+			
+				model.addAttribute("username", "NULL");
+				model.addAttribute("role", "NULL");
+			
 			return "redirect:/";
 		} else {
 			Account account = new Account();
@@ -411,7 +421,7 @@ public class ProductControllerLab6 {
 				} else {
 					model.addAttribute("message", "Login succeed");
 
-					return "redirect:/Lab6Detail/1";
+					return "redirect:/Lab6";
 				}
 
 			}
