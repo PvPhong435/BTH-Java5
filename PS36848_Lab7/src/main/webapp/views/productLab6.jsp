@@ -55,17 +55,18 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Products</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="/Lab6Add" class="btn btn-primary login-button">Danh Sách Sản Phẩm</a>
+                    
+                    <li class="nav-item ms-4">
+                        <a href="/Lab6Login" class="nav-link active">${loginButton} </a>
                     </li>
                     <li class="nav-item ms-4">
-                         <a href="/Lab6Report" class="btn btn-primary login-button">BảngThống Kê</a>
+                        <a href="/Lab6Add" class="nav-link active">Danh Sách Sản Phẩm</a>
+                    </li>
+                    <li class="nav-item ms-4">
+                         <a href="/Lab6Report" class="nav-link active">BảngThống Kê</a>
+                    </li>
+                    <li class="nav-item ms-4">
+                        <a class="nav-link active" aria-current="page" href="/sendMail">Gửi Mail</a>
                     </li>
                 </ul>
                 
@@ -98,7 +99,7 @@
         </div>
         <div class="col-md-12 mt-3">
             <button type="submit" class="btn btn-primary">Tìm kiếm</button>
-            <a href="/Lab6" class="btn btn-danger ms-3">Tải Lại Trang</a>
+            <a href="/Lab6Reload" class="btn btn-danger ms-3">Tải Lại Trang</a>
         </div>
     </form>
 

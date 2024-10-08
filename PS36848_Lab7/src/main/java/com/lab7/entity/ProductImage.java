@@ -1,4 +1,4 @@
-package com.lab5.entity;
+package com.lab7.entity;
 
 import java.io.Serializable;
 import jakarta.persistence.*;
@@ -23,7 +23,7 @@ public class ProductImage {
     private String imageLink; // Liên kết hình ảnh
 
     @ManyToOne
-    @JoinColumn(name = "ProductId")
+    @JoinColumn(name = "ProductId", insertable = false, updatable = false)
     private Product product; // Đối tượng sản phẩm
 
 }

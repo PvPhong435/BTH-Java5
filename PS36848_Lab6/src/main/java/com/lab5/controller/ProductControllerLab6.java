@@ -32,6 +32,7 @@ import com.lab5.entity.Category;
 import com.lab5.entity.Product;
 import com.lab5.entity.ProductImage;
 import com.lab5.entity.ProductImageId;
+import com.lab5.entity.Report;
 
 import jakarta.servlet.ServletContext;
 import jakarta.validation.Valid;
@@ -52,23 +53,16 @@ public class ProductControllerLab6 {
 	private int NUMBER_OF_ITEM_PER_PAGE = 4;
 	
 	Boolean sortChect=false;
-
-	@GetMapping("/Lab6")
-	public String getProductList(Model model)
-	{
-		model.addAttribute("products", productDao.findAll());
-		return "productLab6";
-	}
 	
-	@RequestMapping("/Lab6Page")
+	@GetMapping("/Lab6")
 	public String getProductListPage(Model model, @RequestParam("page") Optional<Integer> page)
-	{
+	{		
 		Pageable pageable = PageRequest.of(page.orElse(FIRST_PAGE_NUMBER), NUMBER_OF_ITEM_PER_PAGE);
 		Page<Product> pages = productDao.findAll(pageable);
 		List<Product> productList = pages.getContent();
 		model.addAttribute("products", productList);
 		model.addAttribute("page", pages);
-		return "product2";
+		return "productLab6";
 	}
 	
 	@RequestMapping("/Lab6Add")
@@ -254,16 +248,16 @@ public class ProductControllerLab6 {
 	
 	@RequestMapping("/Lab6Search")
 	public String seartByName(Model model,
-			@RequestParam("productName") String productName,
-			@RequestParam("priceFrom") Double priceFrom,
-			@RequestParam("priceTo") Double priceTo,
+			@RequestParam("productName") Optional<String> productName,
+			@RequestParam("priceFrom") Optional<Double> priceFrom,
+			@RequestParam("priceTo") Optional<Double> priceTo,
 			@RequestParam("sortOrder") String sortBy)
 	{
 		List<Product> products;
 		
 		if(sortBy.equalsIgnoreCase("non"))
 		{
-			products=productDao.findByNameContainingAndPriceBetween(productName, priceFrom, priceTo);
+			products=productDao.findByNameContainingAndPriceBetween(productName.orElse(""), priceFrom.orElse(Double.MIN_VALUE), priceTo.orElse(Double.MAX_VALUE));
 		}
 		else
 		{
@@ -276,12 +270,25 @@ public class ProductControllerLab6 {
 			{
 				sort=Sort.by(Direction.DESC,"price");
 			}
-			products=productDao.findByNameContainingAndPriceBetween(productName, priceFrom, priceTo,sort);
+			products=productDao.findByNameContainingAndPriceBetween(productName.orElse(""), priceFrom.orElse(Double.MIN_VALUE), priceTo.orElse(Double.MAX_VALUE),sort);
 		}
 		
+		model.addAttribute("productName", productName.orElse(""));
+		model.addAttribute("priceFrom", priceFrom.orElse(null));
+		model.addAttribute("priceTo", priceTo.orElse(null));
+		model.addAttribute("sortOrder", sortBy);
 		model.addAttribute("products", products);
 		
 		return "productLab6";
+	}
+	
+	@RequestMapping("/Lab6Report")
+	public String getReport(Model model)
+	{
+		List<Report> listReport=productDao.getInventoryByCategory();
+		model.addAttribute("categories", listReport);
+		
+		return "productThongKe";
 	}
 
 }

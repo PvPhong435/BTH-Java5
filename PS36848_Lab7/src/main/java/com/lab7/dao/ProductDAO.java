@@ -1,4 +1,4 @@
-package com.lab5.dao;
+package com.lab7.dao;
 
 
 import java.util.List;
@@ -10,8 +10,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import com.lab5.entity.Product;
-import com.lab5.entity.Report;
+import com.lab7.entity.Product;
+import com.lab7.entity.Report;
 
 public interface ProductDAO extends JpaRepository<Product, Integer>{
 
@@ -33,6 +33,8 @@ public interface ProductDAO extends JpaRepository<Product, Integer>{
 	List<Product> findByNameContainingAndPriceBetween(String name,Double priceFrom,Double priceTo);
 	
 	List<Product> findByNameContainingAndPriceBetween(String name,Double priceFrom,Double priceTo,Sort sort);
+	
+	List<Product> findByNameContainingAndPriceBetween(String name,Double priceFrom,Double priceTo,Pageable page);
 	
 	@Query("SELECT new Report(o.category, sum(o.price), count(o)) "
 			+ " FROM Product o "
