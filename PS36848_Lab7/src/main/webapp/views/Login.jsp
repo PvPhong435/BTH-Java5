@@ -29,12 +29,20 @@
                         <form:password path="password" cssClass="form-control" id="password" placeholder="Enter password"/>
                     </div>
 
-                    <!-- Error message if login fails -->
-                    <c:if test="${not empty error}">
-                        <div class="alert alert-danger" role="alert">
-                            ${error}
-                        </div>
-                    </c:if>
+					<!-- Error message if login fails -->
+					<c:if test="${not empty error}">
+					    <div class="alert alert-danger" role="alert">
+					        <c:choose>
+					            <c:when test="${error == 'Optional'}">
+					                Please login!
+					            </c:when>
+					            <c:otherwise>
+					                ${error}
+					            </c:otherwise>
+					        </c:choose>
+					    </div>
+					</c:if>
+
 
                     <button type="submit" class="btn btn-primary btn-block">Login</button>
                 </form:form>

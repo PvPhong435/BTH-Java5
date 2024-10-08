@@ -34,7 +34,9 @@ public interface ProductDAO extends JpaRepository<Product, Integer>{
 	
 	List<Product> findByNameContainingAndPriceBetween(String name,Double priceFrom,Double priceTo,Sort sort);
 	
-	List<Product> findByNameContainingAndPriceBetween(String name,Double priceFrom,Double priceTo,Pageable page);
+	//List<Product> findByNameContainingAndPriceBetween(String name,Double priceFrom,Double priceTo,Pageable page);
+	
+	Page<Product> findByNameContainingAndPriceBetween(String name,Double priceFrom,Double priceTo,Pageable page);
 	
 	@Query("SELECT new Report(o.category, sum(o.price), count(o)) "
 			+ " FROM Product o "

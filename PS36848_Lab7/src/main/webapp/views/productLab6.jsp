@@ -72,6 +72,8 @@
                 
                
             </div>
+            <label class="me-4">Username: ${username}</label>
+                <label>Role: ${role}</label>
         </div>
     </nav>
 

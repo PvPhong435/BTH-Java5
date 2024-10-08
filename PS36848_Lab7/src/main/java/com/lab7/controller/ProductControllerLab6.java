@@ -70,6 +70,7 @@ public class ProductControllerLab6 {
 
 	private Boolean checkLogin = false;
 	private Boolean checkSort = false;
+	private Account accPresent=new Account();
 
 	Boolean sortChect = false;
 
@@ -91,10 +92,11 @@ public class ProductControllerLab6 {
 			}
 		} else {
 			Pageable pageable;
+			Page<Product> pages;
 			System.out.println("đang chạy ở trường hợp else");
 			if (sortBy.equals("non")) {
 				pageable = PageRequest.of(page.orElse(FIRST_PAGE_NUMBER), NUMBER_OF_ITEM_PER_PAGE);
-				products = productDao.findByNameContainingAndPriceBetween(productName.orElse(""),
+				 pages = productDao.findByNameContainingAndPriceBetween(productName.orElse(""),
 						priceFrom.orElse(Double.MIN_VALUE), priceTo.orElse(Double.MAX_VALUE), pageable);
 			} else {
 				Sort sort;
@@ -107,15 +109,28 @@ public class ProductControllerLab6 {
 					pageable = PageRequest.of(page.orElse(FIRST_PAGE_NUMBER), NUMBER_OF_ITEM_PER_PAGE,
 							Sort.by("price").descending());
 				}
-				products = productDao.findByNameContainingAndPriceBetween(productName.orElse(""),
+				 pages = productDao.findByNameContainingAndPriceBetween(productName.orElse(""),
 						priceFrom.orElse(Double.MIN_VALUE), priceTo.orElse(Double.MAX_VALUE), pageable);
+				
 			}
-
+			products=pages.getContent();
+			
 			model.addAttribute("productName", productName.orElse(""));
 			model.addAttribute("priceFrom", priceFrom.orElse(null));
 			model.addAttribute("priceTo", priceTo.orElse(null));
 			model.addAttribute("sortOrder", sortBy.orElse("non"));
 			model.addAttribute("products", products);
+			model.addAttribute("page", pages);
+			if(accPresent!=null)
+			{
+				model.addAttribute("username", accPresent.getUsername());
+				model.addAttribute("role", accPresent.isAdmin()?"Nhân Viên":"Admin");
+			}
+		}
+		if(accPresent!=null)
+		{
+			model.addAttribute("username", accPresent.getUsername());
+			model.addAttribute("role", !accPresent.isAdmin()?"Nhân Viên":"Admin");
 		}
 
 		return "productLab6";
@@ -265,17 +280,6 @@ public class ProductControllerLab6 {
 		}
 	}
 
-//	public List<ProductImage> convertMultipartFilesToProductImages(MultipartFile[] files) {
-//	    List<ProductImage> productImages = new ArrayList<>();
-//	    for (MultipartFile file : files) {
-//	        ProductImage productImage = new ProductImage();
-//	        // Giả sử ProductImage có một thuộc tính imageData để lưu trữ dữ liệu hình ảnh
-//	        productImage.setImageLink(file.getOriginalFilename());
-//	        productImages.add(productImage);
-//	    }
-//	    return productImages;
-//	}
-
 	@RequestMapping("/Lab6Sort/{SortBy}")
 	public String SortProduct(@PathVariable("SortBy") String SortBy, Model model) {
 
@@ -300,28 +304,63 @@ public class ProductControllerLab6 {
 	@PostMapping("/Lab6Search")
 	public String seartByName(Model model, @RequestParam("productName") Optional<String> productName,
 			@RequestParam("priceFrom") Optional<Double> priceFrom, @RequestParam("priceTo") Optional<Double> priceTo,
-			@RequestParam("sortOrder") String sortBy) {
+			@RequestParam("sortOrder") String sortBy, @RequestParam("page") Optional<Integer> page) {
 
 		checkSort = true;
-		if (sortBy.equalsIgnoreCase("non")) {
-			products = productDao.findByNameContainingAndPriceBetween(productName.orElse(""),
-					priceFrom.orElse(Double.MIN_VALUE), priceTo.orElse(Double.MAX_VALUE));
+		Pageable pageable;
+		Page<Product> pages;
+//		if (sortBy.equalsIgnoreCase("non")) {
+//			products = productDao.findByNameContainingAndPriceBetween(productName.orElse(""),
+//					priceFrom.orElse(Double.MIN_VALUE), priceTo.orElse(Double.MAX_VALUE));
+//		} else {
+//			Sort sort;
+//			if (sortBy.equalsIgnoreCase("asc")) {
+//				sort = Sort.by(Direction.ASC, "price");
+//			} else {
+//				sort = Sort.by(Direction.DESC, "price");
+//			}
+//			products = productDao.findByNameContainingAndPriceBetween(productName.orElse(""),
+//					priceFrom.orElse(Double.MIN_VALUE), priceTo.orElse(Double.MAX_VALUE), sort);
+//		}
+		
+		if (sortBy.equals("non")) {
+			pageable = PageRequest.of(page.orElse(FIRST_PAGE_NUMBER), NUMBER_OF_ITEM_PER_PAGE);
+			pages = productDao.findByNameContainingAndPriceBetween(productName.orElse(""),
+					priceFrom.orElse(Double.MIN_VALUE), priceTo.orElse(Double.MAX_VALUE), pageable);
 		} else {
 			Sort sort;
-			if (sortBy.equalsIgnoreCase("asc")) {
-				sort = Sort.by(Direction.ASC, "price");
+			if (sortBy.equals("asc")) {
+				// sort=Sort.by(Direction.ASC,"price");
+				pageable = PageRequest.of(page.orElse(FIRST_PAGE_NUMBER), NUMBER_OF_ITEM_PER_PAGE,
+						Sort.by("price").ascending());
 			} else {
-				sort = Sort.by(Direction.DESC, "price");
+				// sort=Sort.by(Direction.DESC,"price");
+				pageable = PageRequest.of(page.orElse(FIRST_PAGE_NUMBER), NUMBER_OF_ITEM_PER_PAGE,
+						Sort.by("price").descending());
 			}
-			products = productDao.findByNameContainingAndPriceBetween(productName.orElse(""),
-					priceFrom.orElse(Double.MIN_VALUE), priceTo.orElse(Double.MAX_VALUE), sort);
+			pages = productDao.findByNameContainingAndPriceBetween(productName.orElse(""),
+					priceFrom.orElse(Double.MIN_VALUE), priceTo.orElse(Double.MAX_VALUE), pageable);
 		}
-
+		
+		
+		products=pages.getContent();
 		model.addAttribute("productName", productName.orElse(""));
 		model.addAttribute("priceFrom", priceFrom.orElse(null));
 		model.addAttribute("priceTo", priceTo.orElse(null));
 		model.addAttribute("sortOrder", sortBy);
 		model.addAttribute("products", products);
+		model.addAttribute("page", pages);
+		if(accPresent!=null)
+		{
+			model.addAttribute("username", accPresent.getUsername());
+			model.addAttribute("role", !accPresent.isAdmin()?"Nhân Viên":"Admin");
+		}
+		if (checkLogin) {
+			model.addAttribute("loginButton", "Đăng Xuất");
+		} else {
+			model.addAttribute("loginButton", "Đăng Nhập");
+		}
+		
 
 		return "productLab6";
 	}
@@ -367,6 +406,7 @@ public class ProductControllerLab6 {
 				String uri = (String) session.get("security-uri");
 				logger.info("Login success: " + username);
 				if (uri != null) {
+					accPresent=user;
 					return "redirect:" + uri;
 				} else {
 					model.addAttribute("message", "Login succeed");
@@ -385,8 +425,14 @@ public class ProductControllerLab6 {
 	@GetMapping("/sendMail")
 	public String sendMail()
 	{
-		
-		return "sendMail";
+		if(accPresent.isAdmin())
+		{
+			return "sendMail";
+		}
+		else
+		{
+			return "notAdmin";
+		}
 	}
 	
 }
