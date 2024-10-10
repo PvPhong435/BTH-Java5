@@ -403,7 +403,7 @@ public class ProductControllerLab6 {
 
 	@PostMapping("/Lab6Login")
 	public String Checklogin(Model model, @RequestParam("username") String username,
-			@RequestParam("password") String password) {
+			@RequestParam("password") String password,@ModelAttribute() Account account) {
 		logger.info("User Login: " + username);
 		try {
 			Account user = accountDao.findByUsernameLike(username);
