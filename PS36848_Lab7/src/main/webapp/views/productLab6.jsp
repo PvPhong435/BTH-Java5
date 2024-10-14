@@ -153,6 +153,7 @@
             </c:forEach>
         </div>
     </div>
+    
     <!-- Navigation Buttons -->
         <div class="text-center mt-4">
     <label>Số Trang ${page.number + 1}/${page.totalPages}</label><br>
