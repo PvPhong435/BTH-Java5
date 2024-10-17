@@ -26,6 +26,12 @@
 			<img src="/images/images.png" width="55" height="35">
 			<li class="nav-item"><a href="?lang=zh" class="nav-link">
 			<img src="/images/CoTrungQuoc.png" width="55" height="35">
+			<li class="nav-item"><a href="?lang=it" class="nav-link">
+			<img src="/images/CoNuocY.png" width="55" height="35">
+			<li class="nav-item"><a href="?lang=ko" class="nav-link">
+			<img src="/images/CoHanQuoc.png" width="55" height="35">
+			<li class="nav-item"><a href="?lang=th" class="nav-link">
+			<img src="/images/CoNuocThai.png" width="55" height="35">
 			</a></li>
 		</ul>
 	</div>
