@@ -8,6 +8,7 @@ import com.Thi.entity.User;
 
 public interface UserDAO extends JpaRepository<User, String> {
 	List<User> findByFullnameContaining(String fullName);
+	List<User> findByFullnameContaining(String fullName,org.springframework.data.domain.Sort sort);
 	
 	//List<User> findByFullnameContainingAndPriceBetween(String fullName,Double priceFrom,Double priceto);
 	

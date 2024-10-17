@@ -66,6 +66,7 @@ public class UserController {
 		model.addAttribute("checkSelected", checkSelect);
 		model.addAttribute("errMess", errMess);
 		model.addAttribute("Mess", messager);
+		model.addAttribute("checkRead", false);
 		if(checkLogin)
 		{
 			accPresent=new Account();
@@ -91,6 +92,7 @@ public class UserController {
 		model.addAttribute("checkSelected", checkSelect);
 		model.addAttribute("Mess", messager);
 		model.addAttribute("errMess", errMess);
+		model.addAttribute("checkRead", true);
 		if(checkLogin)
 		{
 			accPresent=new Account();
@@ -118,6 +120,18 @@ public class UserController {
 			model.addAttribute("message", "Some fields are not valid. Please fix!");
 			System.out.println("Some fields are not valid. Please fix!"+result.toString());
 			 model.addAttribute("user", user);
+			 List<User> listUser = userDao.findAll();
+				model.addAttribute("userList", listUser);
+			 if(checkLogin)
+				{
+					accPresent=new Account();
+					accPresent=(Account) session.get("user");
+					model.addAttribute("account", accPresent);
+				}
+				else
+				{
+					model.addAttribute("account", null);
+				}
 			return "USER";
 		} 
 		else 
@@ -218,9 +232,28 @@ public class UserController {
 	}
 
 	@GetMapping("/Search")
-	public String getSearch(Model model,@RequestParam("fullname") Optional<String> fullname) {
-		List<User> listUsers=userDao.findByFullnameContaining(fullname.orElse(""));
-		System.out.println(fullname);
+	public String getSearch(Model model,
+			@RequestParam("fullname") Optional<String> fullname,
+			@RequestParam("sortOrder") String sortBy) {
+		List<User> listUsers;
+		if(sortBy.equalsIgnoreCase("non"))
+			{
+//				users=userDao.findByNameContainingAndPriceBetween(productName.orElse(""), priceFrom.orElse(Double.MIN_VALUE), priceTo.orElse(Double.MAX_VALUE));
+				listUsers=userDao.findByFullnameContaining(fullname.orElse(""));
+			}
+			else
+			{
+				Sort sort;
+				if(sortBy.equalsIgnoreCase("asc"))
+				{
+					sort=Sort.by(Direction.ASC,"fullname");
+				}
+				else
+				{
+					sort=Sort.by(Direction.DESC,"fullname");
+				}
+				listUsers=userDao.findByFullnameContaining(fullname.orElse(""),sort);
+			}
 		User user;
 		if(listUsers.size()==1)
 		{
@@ -238,6 +271,7 @@ public class UserController {
 		model.addAttribute("errMess", errMess);
 		model.addAttribute("Mess", messager);
 		model.addAttribute("fullname", fullname.orElse(null));
+		model.addAttribute("sortOrder", sortBy);
 		if(checkLogin)
 		{
 			accPresent=new Account();

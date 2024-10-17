@@ -81,7 +81,7 @@
         <form:form method="POST" modelAttribute="user" action="/AddOrUpdate">
             <div class="form-group">
                 <label for="id">User ID</label>
-                <form:input path="id" class="form-control" />
+                <form:input path="id" class="form-control" readonly="${checkRead}" />
                 <form:errors path="id" cssClass="text-danger" />
             </div>
 
