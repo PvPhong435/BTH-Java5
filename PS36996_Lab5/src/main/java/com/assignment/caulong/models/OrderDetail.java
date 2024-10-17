@@ -1,4 +1,4 @@
-package com.Thi.entity;
+package com.assignment.caulong.models;
 import java.io.Serializable;
 
 import jakarta.persistence.Entity;

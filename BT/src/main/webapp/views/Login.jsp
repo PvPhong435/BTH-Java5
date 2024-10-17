@@ -19,7 +19,7 @@
                 <h2 class="text-center mt-5">Login</h2>
 
                 <!-- Spring Form with JSP -->
-                <form:form action="/Lab6Login" modelAttribute="account" method="post" class="mt-4">
+                <form:form action="/Login" modelAttribute="account" method="post" class="mt-4">
                     <div class="form-group">
                         <label for="username">Username</label>
                         <form:input path="username" cssClass="form-control" id="username" placeholder="Enter username"/>
@@ -46,7 +46,7 @@
 
                     <button type="submit" class="btn btn-primary btn-block">Login</button>
                 </form:form>
-                <a href="/Lab6" class="btn btn-primary login-button mt-4">Quay Về Trang Chủ</a>
+                <a href="/Thi" class="btn btn-primary login-button mt-4">Quay Về Trang Chủ</a>
             </div>
         </div>
     </div>

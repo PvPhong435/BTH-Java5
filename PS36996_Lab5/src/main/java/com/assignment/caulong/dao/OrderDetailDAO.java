@@ -1,13 +1,10 @@
-package com.Thi.dao;
+package com.assignment.caulong.dao;
 
 
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.Thi.entity.OrderDetail;
-
-
-
+import com.assignment.caulong.models.OrderDetail;
 
 public interface OrderDetailDAO extends JpaRepository<OrderDetail, Long>{
 }

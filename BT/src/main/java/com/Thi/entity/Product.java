@@ -52,9 +52,7 @@ public class Product  implements Serializable{
 	@JoinColumn(name = "Categoryid")
 	Category category;
 	
-	@JsonIgnore
-	@OneToMany(mappedBy = "product")
-	List<OrderDetail> orderDetails;	
+
 	@OneToMany(mappedBy="product", cascade = CascadeType.ALL)
 //	@Valid
 	List<ProductImage> productImages;

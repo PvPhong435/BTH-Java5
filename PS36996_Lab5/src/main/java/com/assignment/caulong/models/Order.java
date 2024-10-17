@@ -1,4 +1,4 @@
-package com.Thi.entity;
+package com.assignment.caulong.models;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -34,7 +34,7 @@ public class Order  implements Serializable{
 	Date createDate = new Date();
 	@ManyToOne
 	@JoinColumn(name = "Username")
-	Account account;
+	Account account;		
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "order")

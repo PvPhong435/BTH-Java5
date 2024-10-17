@@ -32,12 +32,13 @@ CREATE TABLE SanCau (
 
 GO
 
-CREATE TABLE AnhSan(
-	MaSan INT,
-	LinkAnh VARCHAR(50),
-	PRIMARY KEY(MaSan,LinkAnh),
+create table AnhSan(
+	MaAnhSan int identity(1, 1),
+	LinkAnh varchar(300),
+	MaSan int,
+	primary key(MaAnhSan),
 	FOREIGN KEY(MaSan) REFERENCES SanCau(MaSan)
-);
+)
 
 GO
 
@@ -79,18 +80,6 @@ CREATE TABLE HoaDonDatSan (
 	PRIMARY KEY(SoHoaDon),
     FOREIGN KEY (MaDatSan) REFERENCES DatSanCau(MaDatSan),
 	FOREIGN KEY(MaNhanVien) REFERENCES NhanVien(MaNhanVien)
-);
-
-go
-
-
-CREATE TABLE UuDai(
-	MaUuDai INT NOT NULL IDENTITY(1,1),
-	NgayBatDau DATE,
-	NgayKetThuc DATE,
-	PhanTramGiam DECIMAL(5, 2),
-	DieuKienGiam NVARCHAR(100),
-	PRIMARY KEY(MaUuDai)
 );
 
 GO
@@ -184,7 +173,17 @@ CREATE TABLE ChiTietHoaDonSanPham(
 
 );
 
+GO
 
+CREATE TABLE GioHang
+(
+	MaKhachHang INT,
+	MaSanPham VARCHAR(50),
+	SoLuong int,
+	PRIMARY KEY(maKhachHang,MaSanPham),
+	FOREIGN KEY(MaKhachHang) REFERENCES KhachHang(MaKhachHang),
+	FOREIGN KEY(MaSanPham) REFERENCES SanPham(MaSanPham)
+);
 
 -- Nhập dữ liệu
 GO
@@ -221,7 +220,9 @@ VALUES
 (N'Sân D', N'Sân VIP', 300000, N'Sân cho giải đấu chuyên nghiệp', N'12 Phố Huế, Hà Nội', 0),
 (N'Sân E', N'Sân Cao Cấp', 250000, N'Sân chuẩn quốc tế', N'34 Hai Bà Trưng, Hà Nội', 1),
 (N'Sân F', N'Sân Thường', 180000, N'Sân ngoài trời', N'56 Tôn Đức Thắng, Hà Nội', 0),
-(N'Sân G', N'Sân Phổ Thông', 130000, N'Sân cho người chơi bình dân', N'78 Nguyễn Du, Hà Nội', 0);
+(N'Sân G', N'Sân Phổ Thông', 130000, N'Sân cho người chơi bình dân', N'78 Nguyễn Du, Hà Nội', 0),
+(N'Sân H', N'Sân Thường', 170000, N'Sân cho người chơi trong nhà', N'Quận 7 Thành phố Hồ Chí Minh', 0)
+;
 
 GO
 
@@ -281,19 +282,22 @@ VALUES
 ('SP004', N'Quần Áo Cầu Lông Adidas', 500000, 'L003', N'Bộ quần áo thể thao chất liệu thoáng mát'),
 ('SP005', N'Giày Cầu Lông Mizuno', 800000, 'L004', N'Giày thể thao chống trượt, bảo vệ cổ chân'),
 ('SP006', N'Balo Cầu Lông Yonex', 300000, 'L005', N'Balo đựng dụng cụ chơi cầu lông'),
-('SP007', N'Túi Đựng Vợt Cầu Lông', 200000, 'L005', N'Túi đựng vợt chuyên dụng');
+('SP007', N'Túi Đựng Vợt Cầu Lông', 200000, 'L005', N'Túi đựng vợt chuyên dụng'),
+('SP008', N'Túi Vợt Cầu Lông Yonex', 250000, 'L005', N'Túi đựng vợt chuyên dụng của yonex');
 
 GO
 
 INSERT INTO HinhSanPham (MaSanPham, DuongDanHinh)
 VALUES 
-('SP001', 'images/yonex_vot.png'),
-('SP002', 'images/lining_vot.png'),
-('SP003', 'images/yonex_cau.png'),
-('SP004', 'images/adidas_quanao.png'),
-('SP005', 'images/mizuno_giay.png'),
-('SP006', 'images/yonex_balo.png'),
-('SP007', 'images/tui_vot.png');
+('SP001', 'yonex_vot.jfif'),
+('SP002', 'lining_vot.jfif'),
+('SP003', 'yonex_cau.jfif'),
+('SP004', 'adidas_quanao.jfif'),
+('SP005', 'mizuno_giay.jpg'),
+('SP006', 'yonex_balo.jfif'),
+('SP007', 'tui_vot.jfif'),
+('SP008', 'yonex_tui.jpg');
+
 
 GO
 
