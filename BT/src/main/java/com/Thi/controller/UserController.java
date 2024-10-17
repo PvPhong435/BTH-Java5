@@ -91,6 +91,16 @@ public class UserController {
 		model.addAttribute("checkSelected", checkSelect);
 		model.addAttribute("Mess", messager);
 		model.addAttribute("errMess", errMess);
+		if(checkLogin)
+		{
+			accPresent=new Account();
+			accPresent=(Account) session.get("user");
+			model.addAttribute("account", accPresent);
+		}
+		else
+		{
+			model.addAttribute("account", null);
+		}
 		return "USER";
 	}
 
@@ -189,13 +199,14 @@ public class UserController {
 				checkLogin = true;
 				session.set("user", user);
 				String uri = (String) session.get("security-uri");
+				session.set("security-uri", null);
 				logger.info("Login success: " + username);
 				if (uri != null) {
 					accPresent = user;
 					return "redirect:" + uri;
 				} else {
 					model.addAttribute("message", "Login succeed");
-
+					
 					return "redirect:/Thi";
 				}
 			}
