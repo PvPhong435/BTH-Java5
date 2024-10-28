@@ -55,6 +55,12 @@ public class UserController {
 	private Account accPresent = null;
 
 	Boolean sortChect = false;
+	
+	@GetMapping("/")
+	public String GetMainBaiThi()
+	{
+		return "redirect:/Thi";
+	}
 
 	@GetMapping("/Thi")
 	public String getBaiThi(Model model) {

@@ -142,10 +142,10 @@ public class ProductControllerLab6 {
 		checkSort=false;
 		return "redirect:/Lab6";
 	}
-	@GetMapping("/")
-	public String getLogin() {
-		return "redirect:/Lab6";
-	}
+//	@GetMapping("/")
+//	public String getLogin() {
+//		return "redirect:/Lab6";
+//	}
 
 	@RequestMapping("/Lab6Add")
 	public String GetProductAdd(Model model) {
